@@ -150,7 +150,7 @@ fun AbstractCopyTask.buildStatic() {
         into("static")
     }
     from(project.buildDir.resolve("processedResources/static"))
-    from(project.buildDir.resolve("distributions")){
+    from(project.buildDir.resolve("distributions/js")){
         include("js.js")
         into("static")
     }
