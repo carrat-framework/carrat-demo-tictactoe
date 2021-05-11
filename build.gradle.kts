@@ -9,7 +9,7 @@ buildscript {
 plugins {
     kotlin("multiplatform") version "1.5.0"
     application
-    id("net.saliman.properties") version "1.5.1"
+//    id("net.saliman.properties") version "1.5.1"
 }
 
 repositories {
@@ -39,9 +39,6 @@ kotlin {
         binaries.executable()
         useCommonJs()
         browser {
-            dceTask {
-                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
-            }
             commonWebpackConfig {
                 cssSupport.enabled = true
             }
@@ -69,7 +66,7 @@ kotlin {
             dependencies {
                 implementation("org.carrat:carrat-web-builder-document:$carratVersion")
                 implementation("org.carrat:carrat-web-webapi:0.0alpha0.0preview0")
-                implementation("org.carrat:carrat-flow:0.0alpha0.0preview0")
+                implementation("org.carrat:carrat-flow:$carratVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 implementation("org.jetbrains:kotlin-css:1.0.0-$kotlinWrappersVersion")

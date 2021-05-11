@@ -24,12 +24,12 @@ object GlobalStyleSheet : StyleSheet("global", {
         color = Color.white
         margin(0.px)
         display = Display.flex
-        flexDirection = FlexDirection.column
+        flexDirection = FlexDirection.row
         justifyContent = JustifyContent.stretch
         alignItems = Align.stretch
         height = 100.vh
         alignContent = Align.stretch
+        userSelect = UserSelect.none
     }
 
-}) {
-}
+})

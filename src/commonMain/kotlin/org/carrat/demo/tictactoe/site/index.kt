@@ -4,5 +4,6 @@ import org.carrat.web.builder.CBlock
 
 val index: CBlock = {
     +displayGame
+    +displayHistory
 }
 

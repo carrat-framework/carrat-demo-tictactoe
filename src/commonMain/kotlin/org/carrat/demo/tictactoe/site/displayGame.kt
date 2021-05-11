@@ -8,6 +8,7 @@ import org.carrat.demo.tictactoe.style.BoardStyleSheet.cell
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.headerStyle
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.o
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.oPlayer
+import org.carrat.demo.tictactoe.style.BoardStyleSheet.playerStyle
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.resetButton
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.winningRowCell
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.x
@@ -19,6 +20,7 @@ import org.carrat.web.builder.*
 private fun CBuilder.player(player: Player) {
     tag(::DIV) {
         css {
+            classes += playerStyle()
             classes += when (player) {
                 Player.X -> xPlayer()
                 Player.O -> oPlayer()
