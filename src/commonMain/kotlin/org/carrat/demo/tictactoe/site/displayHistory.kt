@@ -1,9 +1,6 @@
 package org.carrat.demo.tictactoe.site
 
-import kotlinx.html.*
 import org.carrat.demo.tictactoe.model.*
-import org.carrat.demo.tictactoe.style.BoardStyleSheet
-import org.carrat.demo.tictactoe.style.BoardStyleSheet.boardStyle
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.historyContainer
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.historyEntry
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.historyEntryText
@@ -19,10 +16,10 @@ import org.carrat.demo.tictactoe.style.BoardStyleSheet.smallPlayerStyle
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.winningRowCell
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.x
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.xPlayer
-import org.carrat.web.builder.*
+import org.carrat.web.builder.html.*
 
-private fun CBuilder.player(player: Player) {
-    tag(::DIV) {
+private fun BlockConsumer.player(player: Player) {
+    div {
         css {
             classes += smallPlayerStyle()
             classes += when (player) {
@@ -33,18 +30,18 @@ private fun CBuilder.player(player: Player) {
     }
 }
 
-private fun CBuilder.displayBoard(boardState: BoardState, lastMove : Position) {
+private fun BlockConsumer.displayBoard(boardState: BoardState, lastMove: Position) {
     val winningRow = boardState.winningRow()
-    tag(::TABLE) {
+    table {
         css {
             classes += smallBoardStyle()
         }
-        tag(::TBODY) {
+        tbody {
             VerticalPosition.values().forEach { y ->
-                tag(::TR) {
+                tr {
                     HorizontalPosition.values().forEach { x ->
                         val position = Position(x, y)
-                        tag(::TD) {
+                        td {
                             css {
                                 classes += smallCell()
                                 when ((boardState[position] as? CellState.Marked)?.player) {
@@ -54,13 +51,13 @@ private fun CBuilder.displayBoard(boardState: BoardState, lastMove : Position) {
                                 if (winningRow?.row?.contains(position) == true) {
                                     classes += winningRowCell()
                                 }
-                                if(position == lastMove) {
+                                if (position == lastMove) {
                                     classes += lastMoveCell()
                                 }
-                                if(position == lastMove.above()) {
+                                if (position == lastMove.above()) {
                                     classes += lastMoveCellAbove()
                                 }
-                                if(position == lastMove.leftOf()) {
+                                if (position == lastMove.leftOf()) {
                                     classes += lastMoveCellLeftOf()
                                 }
                             }
@@ -72,12 +69,12 @@ private fun CBuilder.displayBoard(boardState: BoardState, lastMove : Position) {
     }
 }
 
-val displayHistory: CBlock = {
-    tag(::DIV) {
+val displayHistory: BlockContent = {
+    div {
         css {
             classes += historyContainer()
         }
-        tag(::DIV) {
+        div {
             css {
                 classes += historyHeader()
             }
@@ -85,16 +82,16 @@ val displayHistory: CBlock = {
         }
 
         dynamic(game.history) { entry ->
-            tag(::DIV) {
+            div {
                 css {
                     classes += historyEntry()
                 }
-                tag(::DIV) {
+                div {
                     css {
                         classes += historyEntryText()
                     }
                     player(entry.boardState[entry.lastMove].player!!)
-                    + " "
+                    +" "
                     +when {
                         entry.boardState.winningRow() != null -> "wins!"
                         entry.boardState.full() -> "draws!"

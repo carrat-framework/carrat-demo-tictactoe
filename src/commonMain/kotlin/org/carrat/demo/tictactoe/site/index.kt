@@ -1,8 +1,8 @@
 package org.carrat.demo.tictactoe.site
 
-import org.carrat.web.builder.CBlock
+import org.carrat.web.builder.html.BlockContent
 
-val index: CBlock = {
+val index: BlockContent = {
     +displayGame
     +displayHistory
     +loadingOverlay

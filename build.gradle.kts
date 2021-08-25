@@ -7,22 +7,20 @@ buildscript {
 }
 
 plugins {
-    kotlin("multiplatform") version "1.5.0"
+    kotlin("multiplatform") version "1.5.21"
     application
 //    id("net.saliman.properties") version "1.5.1"
 }
 
 repositories {
-    jcenter()
     mavenCentral()
-    maven("https://kotlin.bintray.com/kotlinx")
-    maven("https://carrat.jfrog.io/artifactory/carrat-dev")
+    maven("https://tomaszrocks.jfrog.io/artifactory/carrat-dev/")
     if(project.properties["useMavenLocal"] == "true") {
         mavenLocal()
     }
 }
 
-val kotlinWrappersVersion = "pre.126-kotlin-1.4.10"
+val kotlinWrappersVersion = "pre.215-kotlin-1.5.20"
 val carratVersion: String by project
 
 kotlin {
@@ -50,11 +48,11 @@ kotlin {
             runTask {
                 devServer = org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer(
                     port = 3000,
-                    contentBase = listOf(
+                    static = mutableListOf(
                         project.projectDir.absolutePath + "/src/jsTest/resources",
                         project.buildDir.absolutePath + "/processedResources/js/main"
                     ),
-                    overlay = true,
+//                    overlay = true,
                     open = false
                 )
                 outputFileName = "js.js"
@@ -69,7 +67,7 @@ kotlin {
                 implementation("org.carrat:carrat-flow:$carratVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-                implementation("org.jetbrains:kotlin-css:1.0.0-$kotlinWrappersVersion")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-$kotlinWrappersVersion")
             }
         }
         val commonTest by getting {
@@ -81,7 +79,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation("io.ktor:ktor-html-builder:1.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.1")
                 implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1")
             }

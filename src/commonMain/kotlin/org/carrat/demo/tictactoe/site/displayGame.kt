@@ -1,6 +1,5 @@
 package org.carrat.demo.tictactoe.site
 
-import kotlinx.html.*
 import org.carrat.demo.tictactoe.model.*
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.boardContainer
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.boardStyle
@@ -15,10 +14,12 @@ import org.carrat.demo.tictactoe.style.BoardStyleSheet.x
 import org.carrat.demo.tictactoe.style.BoardStyleSheet.xPlayer
 import org.carrat.flow.flow
 import org.carrat.model.SubscribableReference
-import org.carrat.web.builder.*
+import org.carrat.web.builder.html.*
+import org.carrat.web.webapi.HTMLTableCellElement
+import org.carrat.web.webapi.classSet
 
-private fun CBuilder.player(player: Player) {
-    tag(::DIV) {
+private fun BlockConsumer.player(player: Player) {
+    div {
         css {
             classes += playerStyle()
             classes += when (player) {
@@ -29,12 +30,12 @@ private fun CBuilder.player(player: Player) {
     }
 }
 
-val displayGame: CBlock = {
-    tag(::DIV) {
+val displayGame: BlockContent = {
+    div {
         css {
             classes += boardContainer()
         }
-        tag(::DIV) {
+        div {
             css {
                 classes += headerStyle()
             }
@@ -43,28 +44,28 @@ val displayGame: CBlock = {
                     is GameState.Finished -> {
                         if (it.winner != null) {
                             player(it.winner)
-                            +" won!"
+                            text(" won!")
                         } else {
-                            +"Draw!"
+                            text("Draw!")
                         }
                     }
                     is GameState.Ongoing -> {
-                        +"Current player: "
+                        text("Current player: ")
                         player(it.nextPlayer)
                     }
                 }
             }
         }
-        tag(::TABLE) {
+        table {
             css {
                 classes += boardStyle()
             }
-            tag(::TBODY) {
+            tbody {
                 VerticalPosition.values().forEach { y ->
-                    tag(::TR) {
+                    tr {
                         HorizontalPosition.values().forEach { x ->
                             val position = Position(x, y)
-                            tag(::TD) {
+                            td {
                                 val cell = game.getCell(position)
                                 val cssClasses: SubscribableReference<Set<String>> = flow.run {
                                     query {
@@ -81,8 +82,8 @@ val displayGame: CBlock = {
                                         }.asProperty()
                                     }
                                 }
-                                bind(TD::classes, cssClasses)
-                                onTagEvent(tag, "click") {
+                                bind(HTMLTableCellElement::classSet, cssClasses)
+                                onClick {
                                     game.play(position)
                                 }
                             }
@@ -91,12 +92,12 @@ val displayGame: CBlock = {
                 }
             }
         }
-        tag(::BUTTON) {
+        button {
             css {
                 classes += resetButton()
             }
             +"Reset"
-            onTagEvent(tag, "click") {
+            onClick {
                 game.reset()
             }
         }
